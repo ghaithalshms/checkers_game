@@ -1,47 +1,66 @@
 # import tkinter as tk
 
-# class Checkerboard:
-#     def __init__(self, root):
-#         self.root = root
-#         self.root.title("Jeu du Dames")
-#         self.create_board()
+# p = [
+#     ["PN", "B", "PN", "B", "PN", "B"],
+#     ["B", "PN", "B", "PN", "B", "PN"],
+#     ["N", "B", "N", "B", "N", "B"],
+#     ["B", "N", "B", "N", "B", "N"],
+#     ["PB", "B", "PB", "B", "PB", "B"],
+#     ["B", "PB", "B", "PB", "B", "PB"]
+# ]
 
-#     def create_board(self):
-#         self.circles = {}  # Dictionary to store circle objects and their positions
+# pionSelectionne = 0
+# nouvellePlaceDuPion = 0
 
-#         for i in range(6):
-#             for j in range(6):
-#                 color = "#c9a3a3"
-#                 if (i + j) % 2 == 0:
-#                     color = "#3b2020"
 
-#                 canvas = tk.Canvas(self.root, height=60, width=60, bg=color)
-#                 canvas.grid(row=i, column=j)
+# def button_click(row, col):
+#     global pionSelectionne
+#     global nouvellePlaceDuPion
+#     if pionSelectionne == 0:
+#         pionSelectionne = str(row)+str(col)
+#     else:  # Faire le deplacement
+#         ancienePlace = "B"  # blanc
+#         if (y + x) % 2 == 0:  # (0;0)=>noir, (0;1)=>blanc, (1;0)=>blanc, (1;1)=> noir
+#             ancienePlace = "N"  # noir
+#         nouvellePlaceDuPion = str(row)+str(col)
+#         # changer la nouvelle place par le pion selectionne
+#         p[row][col] = p[int(pionSelectionne[0])][int(pionSelectionne[1])]
+#         # effacer le pion de la place ancienne
+#         p[int(pionSelectionne[0])][int(pionSelectionne[1])] = ancienePlace
+#         pionSelectionne = 0
 
-#                 if i in [4, 5] and (i + j) % 2 == 0:
-#                     circle_radius = 20
-#                     circle_center = (30, 30)
-#                     circle = canvas.create_oval(circle_center[0]-circle_radius, circle_center[1]-circle_radius,
-#                                                 circle_center[0]+circle_radius, circle_center[1]+circle_radius, fill="white")
-#                     self.circles[(i, j)] = circle
 
-#                 if i in [0, 1] and (i + j) % 2 == 0:
-#                     circle_radius = 20
-#                     circle_center = (30, 30)
-#                     circle = canvas.create_oval(circle_center[0]-circle_radius, circle_center[1]-circle_radius,
-#                                                 circle_center[0]+circle_radius, circle_center[1]+circle_radius, fill="black")
-#                     self.circles[(i, j)] = circle
+# root = tk.Tk()
+# root.title("Jeu du Dames")
 
-#                 canvas.bind("<Button-1>", lambda event, row=i, col=j: self.button_click(row, col))
+# # Creation de 6x6 canvas pour la table du jeu
+# for y in range(6):
+#     for x in range(6):
+#         color = "#c9a3a3"  # blanc
+#         if (y + x) % 2 == 0:  # (0;0)=>noir, (0;1)=>blanc, (1;0)=>blanc, (1;1)=> noir
+#             color = "#3b2020"  # noir
 
-#     def button_click(self, row, col):
-#         has_circle = (row, col) in self.circles
-#         print(f"Button clicked: Row {row}, Column {col}, Has Circle: {has_circle}")
+#         canvas = tk.Canvas(root, height=60, width=60, bg=color)
+#         canvas.grid(row=y, column=x)
 
-# if __name__ == "__main__":
-#     root = tk.Tk()
-#     checkerboard = Checkerboard(root)
-#     root.mainloop()
+#         # Dessiner un cercle au milieu du Canvas
+#         if y in [4, 5] and (y + x) % 2 == 0:
+#             circle_radius = 20
+#             circle_center = (30, 30)
+#             canvas.create_oval(circle_center[0]-circle_radius, circle_center[1]-circle_radius,
+#                                circle_center[0]+circle_radius, circle_center[1]+circle_radius, fill="white")
+
+#         if y in [0, 1] and (y + x) % 2 == 0:
+#             circle_radius = 20
+#             circle_center = (30, 30)
+#             canvas.create_oval(circle_center[0]-circle_radius, circle_center[1]-circle_radius,
+#                                circle_center[0]+circle_radius, circle_center[1]+circle_radius, fill="black")
+
+#         # Attacher la fonction button_click au canvas
+#         canvas.bind("<Button-1>", lambda event, row=y,
+#                     col=x: button_click(row, col))
+
+# root.mainloop()
 
 
 import tkinter as tk
@@ -55,39 +74,73 @@ p = [
     ["B", "PB", "B", "PB", "B", "PB"]
 ]
 
+pionSelectionne = 0
+nouvellePlaceDuPion = 0
+
+# Create a two-dimensional list to store canvas objects
+canvas_objects = [[None for _ in range(6)] for _ in range(6)]
+
 
 def button_click(row, col):
-    print(f"Button clicked: Row {row}, Column {col}")
+    global pionSelectionne
+    global nouvellePlaceDuPion
+
+    if pionSelectionne == 0:
+        pionSelectionne = str(row)+str(col)
+    else:  # Faire le deplacement
+        ancienePlace = "B"  # blanc
+        if (y + x) % 2 == 0:
+            ancienePlace = "N"  # noir
+        couleurDuPionSelectionne = p[int(
+            pionSelectionne[0])][int(pionSelectionne[1])]
+
+        nouvellePlaceDuPion = str(row)+str(col)
+
+        # Access the old and new canvas objects
+        old_canvas = canvas_objects[int(
+            pionSelectionne[0])][int(pionSelectionne[1])]
+        new_canvas = canvas_objects[row][col]
+
+        # Move the oval to the new place
+        new_canvas.create_oval(circle_center[0]-circle_radius, circle_center[1]-circle_radius,
+                               circle_center[0]+circle_radius, circle_center[1]+circle_radius, fill="white" if couleurDuPionSelectionne == "PB" else "black")
+
+        # Remove the oval from the old place
+        old_canvas.delete("all")
+
+        # Update the p list
+        p[row][col] = p[int(pionSelectionne[0])][int(pionSelectionne[1])]
+        p[int(pionSelectionne[0])][int(pionSelectionne[1])] = ancienePlace
+
+        pionSelectionne = 0
 
 
 root = tk.Tk()
 root.title("Jeu du Dames")
 
-for i in range(6):
-    for j in range(6):
-        color = "#c9a3a3"
-        if (i + j) % 2 == 0:
-            color = "#3b2020"
+# Creation de 6x6 canvas pour la table du jeu
+for y in range(6):
+    for x in range(6):
+        color = "#c9a3a3" if (y + x) % 2 == 0 else "#3b2020"
 
-        # Create a Canvas instead of a Button
         canvas = tk.Canvas(root, height=60, width=60, bg=color)
-        canvas.grid(row=i, column=j)
+        canvas.grid(row=y, column=x)
 
-        # Draw a circle in the middle of the canvas
-        if i in [4, 5] and (i + j) % 2 == 0:
+        canvas_objects[y][x] = canvas  # Store the canvas object
+
+        if y in [4, 5] and (y + x) % 2 == 0:
             circle_radius = 20
             circle_center = (30, 30)
             canvas.create_oval(circle_center[0]-circle_radius, circle_center[1]-circle_radius,
                                circle_center[0]+circle_radius, circle_center[1]+circle_radius, fill="white")
 
-        if i in [0, 1] and (i + j) % 2 == 0:
+        if y in [0, 1] and (y + x) % 2 == 0:
             circle_radius = 20
             circle_center = (30, 30)
             canvas.create_oval(circle_center[0]-circle_radius, circle_center[1]-circle_radius,
                                circle_center[0]+circle_radius, circle_center[1]+circle_radius, fill="black")
 
-        # Attach the button_click function to the Canvas
-        canvas.bind("<Button-1>", lambda event, row=i,
-                    col=j: button_click(row, col))
+        canvas.bind("<Button-1>", lambda event, row=y,
+                    col=x: button_click(row, col))
 
 root.mainloop()
