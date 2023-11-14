@@ -62,6 +62,7 @@
 
 # root.mainloop()
 
+# //////////////////////////////////////////////////////////////////////////
 
 import tkinter as tk
 
@@ -77,8 +78,15 @@ p = [
 pionSelectionne = 0
 nouvellePlaceDuPion = 0
 
-# Create a two-dimensional list to store canvas objects
-canvas_objects = [[None for _ in range(6)] for _ in range(6)]
+# Créer une liste pour stocker les objets du canevas
+canvas_objects = []
+lignes = 6
+colonnes = 6
+
+# Creer des objets None pour les mettre a jour
+for i in range(lignes):
+    row = [None] * colonnes
+    canvas_objects.append(row)
 
 
 def button_click(row, col):
@@ -102,8 +110,9 @@ def button_click(row, col):
         new_canvas = canvas_objects[row][col]
 
         # Move the oval to the new place
-        new_canvas.create_oval(circle_center[0]-circle_radius, circle_center[1]-circle_radius,
-                               circle_center[0]+circle_radius, circle_center[1]+circle_radius, fill="white" if couleurDuPionSelectionne == "PB" else "black")
+        if couleurDuPionSelectionne == "PB" or couleurDuPionSelectionne == "PN":
+            new_canvas.create_oval(circle_center[0]-circle_radius, circle_center[1]-circle_radius,
+                                   circle_center[0]+circle_radius, circle_center[1]+circle_radius, fill="white" if couleurDuPionSelectionne == "PB" else "black")
 
         # Remove the oval from the old place
         old_canvas.delete("all")
@@ -144,3 +153,7 @@ for y in range(6):
                     col=x: button_click(row, col))
 
 root.mainloop()
+
+# ////////////////////////////////////////////////////////////////////////////////////
+
+# make the code more simple, it is working perfectly
