@@ -54,10 +54,10 @@ def button_click(ligne, colonne):
             canvasDeLaNouvellePlace.create_oval(circle_center[0]-circle_radius, circle_center[1]-circle_radius,
                                                 circle_center[0]+circle_radius, circle_center[1]+circle_radius, fill="white" if couleurDuPionSelectionne == "PB" else "black")
 
-        # Remove the oval from the old place
+        # Supprimer le pion
         canvasDuPionSelectionne.delete("all")
 
-        # Update the p list
+        # Mettre a jour le list
         p[ligne][colonne] = p[int(pionSelectionne[0])][int(pionSelectionne[1])]
         p[int(pionSelectionne[0])][int(pionSelectionne[1])] = ancienePlace
 
